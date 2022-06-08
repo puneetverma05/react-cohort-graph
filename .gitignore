@@ -11,7 +11,7 @@ gen
 *.log# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-dist
+# dist
 lib
 /.pnp
 .pnp.js
