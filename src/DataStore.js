@@ -98,11 +98,13 @@ export default class DataStore {
                                             data[key],
                                             value
                                           ),
-                                          this.options.shadeColor
+                                          this.options.shadeColor,
+                                          this.options.isDarkMode
                                         )
                                       : this._shadeCellWithColor(
                                           percent,
-                                          this.options.shadeColor
+                                          this.options.shadeColor,
+                                          this.options.isDarkMode
                                         ),
                                 };
                             })
@@ -155,7 +157,7 @@ export default class DataStore {
                         valueFor: largeRow[0],
                         total: cellData.total,
                         [PERCENT]: percent,
-                        color: this._shadeCellWithColor(percent, this.options.shadeColor),
+                        color: this._shadeCellWithColor(percent, this.options.shadeColor,this.options.isDarkMode),
                         label: labelPrefix + ' ' + (index - 1)
                     });
                 });
@@ -309,14 +311,14 @@ export default class DataStore {
      * @param color
      * @returns {string}
      */
-    _shadeCellWithColor = (percent, color = "#3f83a3") => {
+    _shadeCellWithColor = (percent, color = "#3f83a3",darkMode = false) => {
         const rate = 1.0 - Math.ceil(percent / 10) / 10;
         const f = parseInt(color.slice(1), 16),
-            t = rate < 0 ? 0 : 255,
             p = rate < 0 ? rate * -1 : rate,
             R = f >> 16,
             G = f >> 8 & 0x00FF,
             B = f & 0x0000FF;
+        const  t = darkMode ? rate < 0 ? 255 : 0 : rate < 0 ? 0 : 255;
         return `#${
             (
                 0x1000000 +

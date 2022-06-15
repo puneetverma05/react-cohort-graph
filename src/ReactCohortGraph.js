@@ -9,7 +9,7 @@ import {
     scrollableTablePart, scrollableTableContent
 } from './styles';
 import DataStore from './DataStore';
-import { HeaderCell, BodyCell, ScrollableContent } from './components';
+import { HeaderCell, BodyCell, ScrollableContent, FixedBodyCell } from './components';
 import { DEFAULT_VALUES, VALUE_KEYS } from './constants';
 import {
     DEFAULT_SHADE_COLOR, DEFAULT_BODY_CELL_COLOR,
@@ -37,8 +37,9 @@ class ReactCohortGraph extends React.Component {
             shadeColor = DEFAULT_SHADE_COLOR, headerCellColor = DEFAULT_HEADER_CELL_COLOR,
             bodyCellColor = DEFAULT_BODY_CELL_COLOR, keyCellColor = DEFAULT_KEY_CELL_COLOR,
             isNormalizedShadeColor = DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR,
+            isDarkMode = DEFAULT_VALUES.IS_DARK_MODE,
         } = props;
-        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor, isNormalizedShadeColor});
+        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor, isNormalizedShadeColor, isDarkMode});
     };
 
     componentWillMount(){
@@ -131,41 +132,31 @@ class ReactCohortGraph extends React.Component {
                                 <div style={FixedTablePartStyles}>
                                     <div style={TableStyles}>
                                         <div style={TableHeadingStyles}>
-                                            {
-                                                header.map((headerCell, i) =>
-                                                    this.isFixed(i) &&
-                                                    <HeaderCell
-                                                        tableCellStyles={tableCellStyles}
-                                                        headerLabelStyles={headerLabelStyles}
-                                                        style={headerCellStyles}
-                                                        key={"header" + i}
-                                                        {...headerCell}
-                                                        formatter={typeof headerFormatter === "function" ? headerFormatter : cellFormatter}
-                                                        showHeaderValues={showHeaderValues}
-                                                        valueType={valueType}
-                                                        isFixed
-                                                    />
-                                                )
-                                            }
+                                            <HeaderCell
+                                                tableCellStyles={tableCellStyles}
+                                                headerLabelStyles={headerLabelStyles}
+                                                style={headerCellStyles}
+                                                key={"header" + 0}
+                                                {...header[0]}
+                                                formatter={typeof headerFormatter === "function" ? headerFormatter : cellFormatter}
+                                                showHeaderValues={showHeaderValues}
+                                                valueType={valueType}
+                                                isFixed
+                                            />
                                         </div>
                                         <div style={TableBodyStyles}>
                                             {
                                                 rows.map((row, j) =>
                                                     <div style={TableRowStyles} key={"row" + j}>
-                                                        {
-                                                            row.map((cell, k) =>
-                                                                this.isFixed(k) &&
-                                                                <BodyCell
-                                                                    tableCellStyles={tableCellStyles}
-                                                                    style={bodyCellStyles}
-                                                                    key={"cell" + k}
-                                                                    {...cell}
-                                                                    valueType={valueType}
-                                                                    formatter={cellFormatter}
-                                                                    isFixed
-                                                                />
-                                                            )
-                                                        }
+                                                        <FixedBodyCell
+                                                          tableCellStyles={tableCellStyles}
+                                                          style={bodyCellStyles}
+                                                          key={"cell" + 0}
+                                                          totalCount={row[1][VALUE_KEYS.VALUE]}
+                                                          {...row[0]}
+                                                          valueType={valueType}
+                                                          formatter={cellFormatter}
+                                                          isFixed/>
                                                     </div>
                                                 )
                                             }
@@ -269,6 +260,7 @@ ReactCohortGraph.propTypes = {
     headerValueStyles: PropTypes.object,
     headerLabelStyles: PropTypes.object,
     isNormalizedShadeColor: PropTypes.bool,
+    isDarkMode: PropTypes.bool,
 };
 
 export default ReactCohortGraph;

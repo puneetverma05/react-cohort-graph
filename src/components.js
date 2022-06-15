@@ -7,6 +7,7 @@ import {
     scrollableTableContent
 } from './styles';
 import { VALUE_KEYS } from './constants';
+import { nFormatter } from './utils';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
 
@@ -40,6 +41,14 @@ export const BodyCell = (props) => (
         {renderValue(props)}
     </div>
 );
+
+export const FixedBodyCell = (props) => (
+    <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
+        {renderValue(props)}
+        <br/>
+        <b>{nFormatter(props?.totalCount)}</b>
+    </div>
+)
 
 export class ScrollableContent extends React.Component {
 

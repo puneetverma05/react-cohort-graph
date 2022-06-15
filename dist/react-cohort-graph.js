@@ -1380,7 +1380,8 @@
     PERCENT: "percent"
   };
   var DEFAULT_VALUES = {
-    IS_NORMALIZED_SHADE_COLOR: false
+    IS_NORMALIZED_SHADE_COLOR: false,
+    IS_DARK_MODE: false
   };
 
   var VALUE = VALUE_KEYS.VALUE,
@@ -1449,7 +1450,7 @@
                   isHeader: false,
                   index: index,
                   type: key
-                }, _defineProperty(_ref, VALUE, value), _defineProperty(_ref, "valueFor", anotherKey), _defineProperty(_ref, "total", cellData.total), _defineProperty(_ref, "isTotal", index === 0), _defineProperty(_ref, "isCell", index > 0), _defineProperty(_ref, PERCENT, percent), _defineProperty(_ref, "color", index === 0 ? _this.options.bodyCellColor : _this.options.isNormalizedShadeColor ? _this._shadeCellWithColor(_this._normalizedValue(data[key], value), _this.options.shadeColor) : _this._shadeCellWithColor(percent, _this.options.shadeColor)), _ref;
+                }, _defineProperty(_ref, VALUE, value), _defineProperty(_ref, "valueFor", anotherKey), _defineProperty(_ref, "total", cellData.total), _defineProperty(_ref, "isTotal", index === 0), _defineProperty(_ref, "isCell", index > 0), _defineProperty(_ref, PERCENT, percent), _defineProperty(_ref, "color", index === 0 ? _this.options.bodyCellColor : _this.options.isNormalizedShadeColor ? _this._shadeCellWithColor(_this._normalizedValue(data[key], value), _this.options.shadeColor, _this.options.isDarkMode) : _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _ref;
               }))));
             }
           };
@@ -1505,7 +1506,7 @@
               isHeader: true,
               index: index,
               type: key
-            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor)), _defineProperty(_this$headers$key$pus2, "label", labelPrefix + ' ' + (index - 1)), _this$headers$key$pus2));
+            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _defineProperty(_this$headers$key$pus2, "label", labelPrefix + ' ' + (index - 1)), _this$headers$key$pus2));
           });
         }
       };
@@ -1614,13 +1615,14 @@
 
     _defineProperty(this, "_shadeCellWithColor", function (percent) {
       var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "#3f83a3";
+      var darkMode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var rate = 1.0 - Math.ceil(percent / 10) / 10;
       var f = parseInt(color.slice(1), 16),
-          t = rate < 0 ? 0 : 255,
           p = rate < 0 ? rate * -1 : rate,
           R = f >> 16,
           G = f >> 8 & 0x00FF,
           B = f & 0x0000FF;
+      var t = darkMode ? rate < 0 ? 255 : 0 : rate < 0 ? 0 : 255;
       return "#".concat((0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1));
     });
 
@@ -1673,6 +1675,18 @@
    * @private
    */
   );
+
+  /**
+   * Created by jyothi on 30/5/17.
+   */
+  var nFormatter = function nFormatter(number) {
+    var digits = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+    var abbrev = ['', 'K', 'M', 'B', 'T'];
+    var unrangifiedOrder = Math.floor(Math.log10(Math.abs(number)) / 3);
+    var order = Math.max(0, Math.min(unrangifiedOrder, abbrev.length - 1));
+    var suffix = abbrev[order];
+    return (number / Math.pow(10, order * 3)).toFixed(digits) + suffix;
+  };
 
   var _excluded = ["formatter"],
       _excluded2 = ["formatter"];
@@ -1732,6 +1746,13 @@
       }, props.style),
       title: "Out of ".concat(props.total, " on ").concat(props.valueFor)
     }, renderValue(props));
+  };
+  var FixedBodyCell = function FixedBodyCell(props) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: _objectSpread2(_objectSpread2({}, tableCell(props.tableCellStyles)), {}, {
+        backgroundColor: props.color
+      }, props.style)
+    }, renderValue(props), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("b", null, nFormatter(props === null || props === void 0 ? void 0 : props.totalCount)));
   };
   var ScrollableContent = /*#__PURE__*/function (_React$Component) {
     _inherits(ScrollableContent, _React$Component);
@@ -1817,13 +1838,16 @@
             _props$keyCellColor = props.keyCellColor,
             keyCellColor = _props$keyCellColor === void 0 ? DEFAULT_KEY_CELL_COLOR : _props$keyCellColor,
             _props$isNormalizedSh = props.isNormalizedShadeColor,
-            isNormalizedShadeColor = _props$isNormalizedSh === void 0 ? DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR : _props$isNormalizedSh;
+            isNormalizedShadeColor = _props$isNormalizedSh === void 0 ? DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR : _props$isNormalizedSh,
+            _props$isDarkMode = props.isDarkMode,
+            isDarkMode = _props$isDarkMode === void 0 ? DEFAULT_VALUES.IS_DARK_MODE : _props$isDarkMode;
         return new DataStore(data, {
           shadeColor: shadeColor,
           headerCellColor: headerCellColor,
           bodyCellColor: bodyCellColor,
           keyCellColor: keyCellColor,
-          isNormalizedShadeColor: isNormalizedShadeColor
+          isNormalizedShadeColor: isNormalizedShadeColor,
+          isDarkMode: isDarkMode
         });
       });
 
@@ -1969,35 +1993,32 @@
             style: TableStyles
           }, /*#__PURE__*/React.createElement("div", {
             style: TableHeadingStyles
-          }, header.map(function (headerCell, i) {
-            return _this2.isFixed(i) && /*#__PURE__*/React.createElement(HeaderCell, _extends({
-              tableCellStyles: tableCellStyles,
-              headerLabelStyles: headerLabelStyles,
-              style: headerCellStyles,
-              key: "header" + i
-            }, headerCell, {
-              formatter: typeof headerFormatter === "function" ? headerFormatter : cellFormatter,
-              showHeaderValues: showHeaderValues,
-              valueType: valueType,
-              isFixed: true
-            }));
-          })), /*#__PURE__*/React.createElement("div", {
+          }, /*#__PURE__*/React.createElement(HeaderCell, _extends({
+            tableCellStyles: tableCellStyles,
+            headerLabelStyles: headerLabelStyles,
+            style: headerCellStyles,
+            key: "header" + 0
+          }, header[0], {
+            formatter: typeof headerFormatter === "function" ? headerFormatter : cellFormatter,
+            showHeaderValues: showHeaderValues,
+            valueType: valueType,
+            isFixed: true
+          }))), /*#__PURE__*/React.createElement("div", {
             style: TableBodyStyles
           }, rows.map(function (row, j) {
             return /*#__PURE__*/React.createElement("div", {
               style: TableRowStyles,
               key: "row" + j
-            }, row.map(function (cell, k) {
-              return _this2.isFixed(k) && /*#__PURE__*/React.createElement(BodyCell, _extends({
-                tableCellStyles: tableCellStyles,
-                style: bodyCellStyles,
-                key: "cell" + k
-              }, cell, {
-                valueType: valueType,
-                formatter: cellFormatter,
-                isFixed: true
-              }));
-            }));
+            }, /*#__PURE__*/React.createElement(FixedBodyCell, _extends({
+              tableCellStyles: tableCellStyles,
+              style: bodyCellStyles,
+              key: "cell" + 0,
+              totalCount: row[1][VALUE_KEYS.VALUE]
+            }, row[0], {
+              valueType: valueType,
+              formatter: cellFormatter,
+              isFixed: true
+            })));
           })))), /*#__PURE__*/React.createElement("div", {
             style: ScrollableTablePartStyles
           }, /*#__PURE__*/React.createElement(ScrollableContent, {
@@ -2087,7 +2108,8 @@
     scrollableTableContentStyles: propTypes.object,
     headerValueStyles: propTypes.object,
     headerLabelStyles: propTypes.object,
-    isNormalizedShadeColor: propTypes.bool
+    isNormalizedShadeColor: propTypes.bool,
+    isDarkMode: propTypes.bool
   };
 
   return ReactCohortGraph;
