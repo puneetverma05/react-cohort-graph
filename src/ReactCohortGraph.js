@@ -136,7 +136,7 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeadingStyles}>
                                             <HeaderCell
                                                 tableCellStyles={tableCellStyles}
-                                                headerLabelStyles={headerLabelStyles}
+                                                headerLabelStyles={{...headerLabelStyles, visibility:'hidden'}}
                                                 style={headerCellStyles}
                                                 key={"header" + 0}
                                                 {...header[0]}

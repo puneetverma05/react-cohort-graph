@@ -2015,7 +2015,9 @@
             style: TableHeadingStyles
           }, /*#__PURE__*/React.createElement(HeaderCell, _extends({
             tableCellStyles: tableCellStyles,
-            headerLabelStyles: _objectSpread2({}, headerLabelStyles),
+            headerLabelStyles: _objectSpread2(_objectSpread2({}, headerLabelStyles), {}, {
+              visibility: 'hidden'
+            }),
             style: headerCellStyles,
             key: "header" + 0
           }, header[0], {
