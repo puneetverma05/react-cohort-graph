@@ -40,6 +40,8 @@ export interface Props {
     headerLabelStyles?: object;
     isNormalizedShadeColor?: boolean;
     isDarkMode?: boolean;
+    lastCellShaded?: boolean;
+    headerRange?: string;
 }
 
 declare const ReactCohortGraph: React.ComponentType<Props>;

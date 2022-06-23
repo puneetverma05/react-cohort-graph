@@ -22,7 +22,7 @@ const renderValue = (props) => { //label and cell formatters
 
 const renderHeader = props => { //header formatter
     const { formatter, label} = props;
-    if(typeof formatter === 'function'){
+    if(typeof formatter === 'function') {
         const { formatter, ...rest } = props;
         return formatter(rest);
     }
@@ -37,7 +37,7 @@ export const HeaderCell = (props) => (
 );
 
 export const BodyCell = (props) => (
-    <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
+    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
         {renderValue(props)}
     </div>
 );

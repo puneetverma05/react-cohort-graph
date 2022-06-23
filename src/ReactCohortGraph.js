@@ -23,7 +23,7 @@ class ReactCohortGraph extends React.Component {
         const {
             data = {},
             defaultValueType =  VALUE_KEYS.PERCENT,
-            shadeColor
+            shadeColor,
         } = props;
         this.state = {
             dataStore: this._getStore(props),
@@ -38,8 +38,10 @@ class ReactCohortGraph extends React.Component {
             bodyCellColor = DEFAULT_BODY_CELL_COLOR, keyCellColor = DEFAULT_KEY_CELL_COLOR,
             isNormalizedShadeColor = DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR,
             isDarkMode = DEFAULT_VALUES.IS_DARK_MODE,
+            lastCellShaded = DEFAULT_VALUES.LAST_CELL_SHADED,
+            headerRange = DEFAULT_VALUES.HEADER_RANGE,
         } = props;
-        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor, isNormalizedShadeColor, isDarkMode});
+        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor, isNormalizedShadeColor, isDarkMode, lastCellShaded, headerRange});
     };
 
     componentWillMount(){
@@ -107,7 +109,7 @@ class ReactCohortGraph extends React.Component {
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
             scrollableTablePartStyles, scrollableTableContentStyles,
-            headerLabelStyles, tableCellStyles
+            headerLabelStyles, tableCellStyles, lastCellShaded
         } = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
@@ -188,7 +190,7 @@ class ReactCohortGraph extends React.Component {
                                                     rows.map((row, j) =>
                                                         <div style={TableRowStyles} key={"row" + j}>
                                                             {
-                                                                row.map((cell, k) =>
+                                                                row.map((cell, k, {length}) =>
                                                                     !this.isFixed(k) &&
                                                                     <BodyCell
                                                                         tableCellStyles={tableCellStyles}
@@ -198,6 +200,8 @@ class ReactCohortGraph extends React.Component {
                                                                         valueType={valueType}
                                                                         formatter={cellFormatter}
                                                                         isFixed={false}
+                                                                        lastCellShaded={lastCellShaded}
+                                                                        isLastItem={k + 1 === length}
                                                                     />
                                                                 )
                                                             }
@@ -261,6 +265,8 @@ ReactCohortGraph.propTypes = {
     headerLabelStyles: PropTypes.object,
     isNormalizedShadeColor: PropTypes.bool,
     isDarkMode: PropTypes.bool,
+    lastCellShaded: PropTypes.bool,
+    headerRange: PropTypes.string,
 };
 
 export default ReactCohortGraph;

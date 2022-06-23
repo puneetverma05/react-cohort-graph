@@ -107,6 +107,9 @@ class App extends Component {
         headerValueStyles: PropTypes.object,
         headerLabelStyles: PropTypes.object,
         isNormalizedShadeColor: PropTypes.bool,
+        isDarkMode: PropTypes.bool,
+        lastCellShaded: PropTypes.bool,
+        headerRange: PropTypes.string, // ['default','double','quarter']
     }`}
 </code>
 </pre>

@@ -1381,7 +1381,9 @@
   };
   var DEFAULT_VALUES = {
     IS_NORMALIZED_SHADE_COLOR: false,
-    IS_DARK_MODE: false
+    IS_DARK_MODE: false,
+    LAST_CELL_SHADED: false,
+    HEADER_RANGE: 'default'
   };
 
   var VALUE = VALUE_KEYS.VALUE,
@@ -1506,7 +1508,7 @@
               isHeader: true,
               index: index,
               type: key
-            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _defineProperty(_this$headers$key$pus2, "label", labelPrefix + ' ' + (index - 1)), _this$headers$key$pus2));
+            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _defineProperty(_this$headers$key$pus2, "label", _this._postfixHeaderLabel(labelPrefix, index, _this.options.headerRange)), _this$headers$key$pus2));
           });
         }
       };
@@ -1652,6 +1654,16 @@
       return Math.round(nv);
     });
 
+    _defineProperty(this, "_postfixHeaderLabel", function (labelPrefix, index, headerRange) {
+      if (headerRange === 'default') {
+        return labelPrefix + ' ' + (index - 1);
+      } else if (headerRange === 'double') {
+        return labelPrefix + ' ' + (index - 1) + '-' + index;
+      } else if (headerRange === 'quarter') {
+        return '  Q' + (index - 1);
+      }
+    });
+
     this.isValid = true;
 
     this._checkValidity(_data);
@@ -1741,6 +1753,7 @@
   };
   var BodyCell = function BodyCell(props) {
     return /*#__PURE__*/React.createElement("div", {
+      className: props.lastCellShaded && props.isLastItem && 'last-item-forcasted',
       style: _objectSpread2(_objectSpread2({}, tableCell(props.tableCellStyles)), {}, {
         backgroundColor: props.color
       }, props.style),
@@ -1840,14 +1853,20 @@
             _props$isNormalizedSh = props.isNormalizedShadeColor,
             isNormalizedShadeColor = _props$isNormalizedSh === void 0 ? DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR : _props$isNormalizedSh,
             _props$isDarkMode = props.isDarkMode,
-            isDarkMode = _props$isDarkMode === void 0 ? DEFAULT_VALUES.IS_DARK_MODE : _props$isDarkMode;
+            isDarkMode = _props$isDarkMode === void 0 ? DEFAULT_VALUES.IS_DARK_MODE : _props$isDarkMode,
+            _props$lastCellShaded = props.lastCellShaded,
+            lastCellShaded = _props$lastCellShaded === void 0 ? DEFAULT_VALUES.LAST_CELL_SHADED : _props$lastCellShaded,
+            _props$headerRange = props.headerRange,
+            headerRange = _props$headerRange === void 0 ? DEFAULT_VALUES.HEADER_RANGE : _props$headerRange;
         return new DataStore(data, {
           shadeColor: shadeColor,
           headerCellColor: headerCellColor,
           bodyCellColor: bodyCellColor,
           keyCellColor: keyCellColor,
           isNormalizedShadeColor: isNormalizedShadeColor,
-          isDarkMode: isDarkMode
+          isDarkMode: isDarkMode,
+          lastCellShaded: lastCellShaded,
+          headerRange: headerRange
         });
       });
 
@@ -1962,7 +1981,8 @@
             scrollableTablePartStyles = _this$props2.scrollableTablePartStyles,
             scrollableTableContentStyles = _this$props2.scrollableTableContentStyles,
             headerLabelStyles = _this$props2.headerLabelStyles,
-            tableCellStyles = _this$props2.tableCellStyles;
+            tableCellStyles = _this$props2.tableCellStyles,
+            lastCellShaded = _this$props2.lastCellShaded;
         var _this$state = this.state,
             dataStore = _this$state.dataStore,
             currentType = _this$state.currentType,
@@ -1995,7 +2015,7 @@
             style: TableHeadingStyles
           }, /*#__PURE__*/React.createElement(HeaderCell, _extends({
             tableCellStyles: tableCellStyles,
-            headerLabelStyles: headerLabelStyles,
+            headerLabelStyles: _objectSpread2({}, headerLabelStyles),
             style: headerCellStyles,
             key: "header" + 0
           }, header[0], {
@@ -2044,7 +2064,8 @@
             return /*#__PURE__*/React.createElement("div", {
               style: TableRowStyles,
               key: "row" + j
-            }, row.map(function (cell, k) {
+            }, row.map(function (cell, k, _ref) {
+              var length = _ref.length;
               return !_this2.isFixed(k) && /*#__PURE__*/React.createElement(BodyCell, _extends({
                 tableCellStyles: tableCellStyles,
                 style: bodyCellStyles,
@@ -2052,7 +2073,9 @@
               }, cell, {
                 valueType: valueType,
                 formatter: cellFormatter,
-                isFixed: false
+                isFixed: false,
+                lastCellShaded: lastCellShaded,
+                isLastItem: k + 1 === length
               }));
             }));
           })))))))));
@@ -2109,7 +2132,9 @@
     headerValueStyles: propTypes.object,
     headerLabelStyles: propTypes.object,
     isNormalizedShadeColor: propTypes.bool,
-    isDarkMode: propTypes.bool
+    isDarkMode: propTypes.bool,
+    lastCellShaded: propTypes.bool,
+    headerRange: propTypes.string
   };
 
   return ReactCohortGraph;

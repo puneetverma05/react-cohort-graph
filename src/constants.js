@@ -10,4 +10,6 @@ export const VALUE_KEYS = {
 export const DEFAULT_VALUES = {
     IS_NORMALIZED_SHADE_COLOR: false,
     IS_DARK_MODE: false,
+    LAST_CELL_SHADED: false,
+    HEADER_RANGE: 'default',
   };

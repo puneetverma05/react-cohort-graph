@@ -157,8 +157,8 @@ export default class DataStore {
                         valueFor: largeRow[0],
                         total: cellData.total,
                         [PERCENT]: percent,
-                        color: this._shadeCellWithColor(percent, this.options.shadeColor,this.options.isDarkMode),
-                        label: labelPrefix + ' ' + (index - 1)
+                        color: this._shadeCellWithColor(percent, this.options.shadeColor, this.options.isDarkMode),
+                        label: this._postfixHeaderLabel(labelPrefix, index, this.options.headerRange),
                     });
                 });
             }
@@ -368,5 +368,22 @@ export default class DataStore {
         const nv = ((value - Math.min(...joinedArray)) / (Math.max(...joinedArray) - Math.min(...joinedArray))) * 100;
         return Math.round(nv);
       };
+
+      /**
+       * Postfix Header Label for different ranges
+       * @param labelPrefix
+       * @param index - header position
+       * @param headerRange - header range
+       * @return {string} - formmatted label
+       */
+        _postfixHeaderLabel = (labelPrefix, index, headerRange) => {
+            if(headerRange === 'default') {
+                return labelPrefix + ' ' + (index - 1)
+            } else if (headerRange === 'double') {
+                return labelPrefix + ' ' + (index - 1) + '-' + index
+            } else if (headerRange === 'quarter') {
+                return '  Q' + (index - 1)
+            }
+        }
 }
 
