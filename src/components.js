@@ -37,7 +37,7 @@ export const HeaderCell = (props) => (
 );
 
 export const BodyCell = (props) => (
-    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
+    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
         {renderValue(props)}
     </div>
 );

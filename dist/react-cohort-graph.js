@@ -1756,8 +1756,7 @@
       className: props.lastCellShaded && props.isLastItem && 'last-item-forcasted',
       style: _objectSpread2(_objectSpread2({}, tableCell(props.tableCellStyles)), {}, {
         backgroundColor: props.color
-      }, props.style),
-      title: "Out of ".concat(props.total, " on ").concat(props.valueFor)
+      }, props.style)
     }, renderValue(props));
   };
   var FixedBodyCell = function FixedBodyCell(props) {
