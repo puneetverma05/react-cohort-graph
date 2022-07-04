@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import {
     table, tableRow, tableHeading,
     tableBody, fixedTablePart, wrapper,
@@ -209,6 +210,7 @@ class ReactCohortGraph extends React.Component {
                                                     )
                                                 }
                                             </div>
+                                            <ReactTooltip />
                                         </div>
                                     </ScrollableContent>
                                 </div>

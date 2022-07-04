@@ -64,7 +64,8 @@
     "@babel/plugin-syntax-import-meta": "^7.2.0"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-tooltip": "^4.2.21"
   },
   "files": [
     "lib",

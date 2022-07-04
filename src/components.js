@@ -13,6 +13,7 @@ const { VALUE, PERCENT } = VALUE_KEYS;
 
 const renderValue = (props) => { //label and cell formatters
     const {isTotal, isLabel, isDate, valueType, formatter} = props;
+    console.log(props);
     if(typeof formatter === 'function'){
         const { formatter, ...rest } = props;
         return formatter(rest);
@@ -37,7 +38,7 @@ export const HeaderCell = (props) => (
 );
 
 export const BodyCell = (props) => (
-    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
+    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} data-tip={`${nFormatter(props[VALUE])} on ${props.valueFor}`}>
         {renderValue(props)}
     </div>
 );
@@ -46,7 +47,7 @@ export const FixedBodyCell = (props) => (
     <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
         {renderValue(props)}
         <br/>
-        <b>{nFormatter(props?.totalCount)}</b>
+        <b>{nFormatter(props.totalCount)}</b>
     </div>
 )
 
