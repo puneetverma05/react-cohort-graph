@@ -158,7 +158,7 @@ export default class DataStore {
                         total: cellData.total,
                         [PERCENT]: percent,
                         color: this._shadeCellWithColor(percent, this.options.shadeColor, this.options.isDarkMode),
-                        label: this._postfixHeaderLabel(labelPrefix, index, this.options.headerRange),
+                        label: this._postfixHeaderLabel(labelPrefix, index-1, this.options.headerRange),
                     });
                 });
             }
@@ -378,11 +378,11 @@ export default class DataStore {
        */
         _postfixHeaderLabel = (labelPrefix, index, headerRange) => {
             if(headerRange === 'default') {
-                return labelPrefix + ' ' + (index - 1)
+                return labelPrefix + ' ' + index
             } else if (headerRange === 'double') {
-                return labelPrefix + ' ' + (index - 1) + '-' + index
+                return labelPrefix + ' ' + ((index * 2 ) - 1) + '-' + (index * 2)
             } else if (headerRange === 'quarter') {
-                return '  Q' + (index - 1)
+                return '  Q' + index
             }
         }
 }

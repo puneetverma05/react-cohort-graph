@@ -13,7 +13,6 @@ const { VALUE, PERCENT } = VALUE_KEYS;
 
 const renderValue = (props) => { //label and cell formatters
     const {isTotal, isLabel, isDate, valueType, formatter} = props;
-    console.log(props);
     if(typeof formatter === 'function'){
         const { formatter, ...rest } = props;
         return formatter(rest);

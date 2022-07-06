@@ -4161,7 +4161,7 @@
               isHeader: true,
               index: index,
               type: key
-            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _defineProperty(_this$headers$key$pus2, "label", _this._postfixHeaderLabel(labelPrefix, index, _this.options.headerRange)), _this$headers$key$pus2));
+            }, _defineProperty(_this$headers$key$pus2, VALUE, value), _defineProperty(_this$headers$key$pus2, "valueFor", largeRow[0]), _defineProperty(_this$headers$key$pus2, "total", cellData.total), _defineProperty(_this$headers$key$pus2, PERCENT, percent), _defineProperty(_this$headers$key$pus2, "color", _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _defineProperty(_this$headers$key$pus2, "label", _this._postfixHeaderLabel(labelPrefix, index - 1, _this.options.headerRange)), _this$headers$key$pus2));
           });
         }
       };
@@ -4309,11 +4309,11 @@
 
     _defineProperty(this, "_postfixHeaderLabel", function (labelPrefix, index, headerRange) {
       if (headerRange === 'default') {
-        return labelPrefix + ' ' + (index - 1);
+        return labelPrefix + ' ' + index;
       } else if (headerRange === 'double') {
-        return labelPrefix + ' ' + (index - 1) + '-' + index;
+        return labelPrefix + ' ' + (index * 2 - 1) + '-' + index * 2;
       } else if (headerRange === 'quarter') {
-        return '  Q' + (index - 1);
+        return '  Q' + index;
       }
     });
 
@@ -4363,7 +4363,6 @@
         isDate = props.isDate,
         valueType = props.valueType,
         formatter = props.formatter;
-    console.log(props);
 
     if (typeof formatter === 'function') {
       var _formatter = props.formatter,
@@ -4732,7 +4731,9 @@
                 isLastItem: k + 1 === length
               }));
             }));
-          })), React.createElement(ReactTooltip, null))))))));
+          })), React.createElement(ReactTooltip, {
+            delayShow: 500
+          }))))))));
         }
 
         if (showEmptyDataMessage) {

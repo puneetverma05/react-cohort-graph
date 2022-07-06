@@ -210,7 +210,7 @@ class ReactCohortGraph extends React.Component {
                                                     )
                                                 }
                                             </div>
-                                            <ReactTooltip />
+                                            <ReactTooltip delayShow={500} />
                                         </div>
                                     </ScrollableContent>
                                 </div>
