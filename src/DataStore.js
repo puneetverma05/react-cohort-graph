@@ -76,8 +76,11 @@ export default class DataStore {
                         cellData.isDate = true;
                         cellData.index = -1;
                         cellData.isHeader = false;
+                        let nextKeyIndex = Object.keys(data[key]).indexOf(anotherKey);
                         this.store[key].push([
                             cellData, ...data[key][anotherKey].map((value, index) => {
+                                let nextKey = Object.keys(data[key])[nextKeyIndex++];
+                                const nextValueFor = nextKey;
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
                                   isHeader: false,
@@ -85,6 +88,7 @@ export default class DataStore {
                                   type: key,
                                   [VALUE]: value,
                                   valueFor: anotherKey,
+                                  nextValueFor: nextValueFor || 'Upcoming Period',
                                   total: cellData.total,
                                   isTotal: index === 0,
                                   isCell: index > 0,

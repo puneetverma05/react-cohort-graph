@@ -4095,9 +4095,13 @@
               cellData.isDate = true;
               cellData.index = -1;
               cellData.isHeader = false;
+              var nextKeyIndex = Object.keys(data[key]).indexOf(anotherKey);
 
               _this.store[key].push([cellData].concat(_toConsumableArray(data[key][anotherKey].map(function (value, index) {
                 var _ref;
+
+                var nextKey = Object.keys(data[key])[nextKeyIndex++];
+                var nextValueFor = nextKey;
 
                 var percent = _this._getPercentage(cellData.total, value);
 
@@ -4105,7 +4109,7 @@
                   isHeader: false,
                   index: index,
                   type: key
-                }, _defineProperty(_ref, VALUE, value), _defineProperty(_ref, "valueFor", anotherKey), _defineProperty(_ref, "total", cellData.total), _defineProperty(_ref, "isTotal", index === 0), _defineProperty(_ref, "isCell", index > 0), _defineProperty(_ref, PERCENT, percent), _defineProperty(_ref, "color", index === 0 ? _this.options.bodyCellColor : _this.options.isNormalizedShadeColor ? _this._shadeCellWithColor(_this._normalizedValue(data[key], value), _this.options.shadeColor, _this.options.isDarkMode) : _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _ref;
+                }, _defineProperty(_ref, VALUE, value), _defineProperty(_ref, "valueFor", anotherKey), _defineProperty(_ref, "nextValueFor", nextValueFor || 'Upcoming Period'), _defineProperty(_ref, "total", cellData.total), _defineProperty(_ref, "isTotal", index === 0), _defineProperty(_ref, "isCell", index > 0), _defineProperty(_ref, PERCENT, percent), _defineProperty(_ref, "color", index === 0 ? _this.options.bodyCellColor : _this.options.isNormalizedShadeColor ? _this._shadeCellWithColor(_this._normalizedValue(data[key], value), _this.options.shadeColor, _this.options.isDarkMode) : _this._shadeCellWithColor(percent, _this.options.shadeColor, _this.options.isDarkMode)), _ref;
               }))));
             }
           };
@@ -4408,7 +4412,7 @@
       style: _objectSpread({}, tableCell(props.tableCellStyles), {
         backgroundColor: props.color
       }, props.style),
-      "data-tip": "".concat(nFormatter(props[VALUE$1]), " on ").concat(props.valueFor)
+      "data-tip": "".concat(nFormatter(props[VALUE$1]), " on ").concat(props.nextValueFor)
     }, renderValue(props));
   };
   var FixedBodyCell = function FixedBodyCell(props) {
@@ -4724,6 +4728,7 @@
                 style: bodyCellStyles,
                 key: "cell" + k
               }, cell, {
+                nextCell: row[k + 1],
                 valueType: valueType,
                 formatter: cellFormatter,
                 isFixed: false,

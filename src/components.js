@@ -37,7 +37,7 @@ export const HeaderCell = (props) => (
 );
 
 export const BodyCell = (props) => (
-    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} data-tip={`${nFormatter(props[VALUE])} on ${props.valueFor}`}>
+    <div className={props.lastCellShaded && props.isLastItem && 'last-item-forcasted'} style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} data-tip={`${nFormatter(props[VALUE])} on ${props.nextValueFor}`}>
         {renderValue(props)}
     </div>
 );
